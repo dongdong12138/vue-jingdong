@@ -1,18 +1,67 @@
 <template>
 
   <div class="wrapper">
+
     <div class="position">
       <span class="iconfont position__icon">&#xe619;</span>
       北京理工大学国防科技园2号楼10层
       <span class="iconfont position_notice">&#xe60b;</span>
     </div>
+
     <div class="search">
       <span class="iconfont">&#xe62d;</span>
       <span class="search__text">山姆会员商店优惠商品</span>
     </div>
+
     <div class="banner">
       <img src="http://www.dell-lee.com/imgs/vue3/banner.jpg" alt="banner" class="banner__img" />
     </div>
+
+    <div class="icons">
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/超市.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">超市便利</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/菜市场.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">菜市场</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/水果店.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">水果店</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/鲜花.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">鲜花绿植</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/医药健康.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">医药健康</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/家居.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">家居时尚</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/蛋糕.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">烘培蛋糕</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/签到.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">签到</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/大牌免运.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">大牌免运</p>
+      </div>
+      <div class="icons__item">
+        <img src="http://www.dell-lee.com/imgs/vue3/红包.png" alt="icon" class="icons__item__img" />
+        <p class="icons__item__desc">红包套餐</p>
+      </div>
+    </div>
+
+    <div class="gap"></div>
+
   </div>
 
   <div class="docker">
@@ -78,11 +127,35 @@
   &__img { width: 100%; }
 }
 
+.icons {
+  display: flex; flex-wrap: wrap;
+  margin-top: .16rem;
+  &__item {
+    width: 20%;
+    &__img {
+      display: block;
+      width: .4rem; height: .4rem;
+      margin: 0 auto;
+    }
+    &__desc {
+      color: $content-fontcolor;
+      text-align: center;
+      margin: .06rem 0 .16rem 0;
+    }
+  }
+}
+
+.gap {
+  height: .1rem;
+  background: $content-bgColor;
+  margin: 0 -.18rem;
+}
+
 .docker {
   box-sizing: border-box;
   color: $content-fontcolor;
   width: 100%; height: .49rem;
-  border-top: .01rem solid #F1F1F1;
+  border-top: .01rem solid $content-bgColor;
   padding: 0 .18rem;
   position: absolute; left: 0; bottom: 0;
   display: flex;
