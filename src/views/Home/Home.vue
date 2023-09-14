@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .wrapper {
   overflow-y: auto;
   padding: 0 .18rem .1rem .18rem;
