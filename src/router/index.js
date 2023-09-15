@@ -4,7 +4,15 @@ import Login from '@/views/Login/Login.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
-  { path: '/login', name: 'login', component: Login }
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    beforeEnter(to, from, next) {
+      const isLogin = JSON.parse(localStorage.getItem('isLogin'))
+      isLogin ? next({ name: from.name }) : next()
+    }
+  }
   // {
   //   path: '/about',
   //   name: 'about',
@@ -18,6 +26,11 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const isLogin = JSON.parse(localStorage.getItem('isLogin'));
+  (isLogin || to.name === 'login') ? next() : next({ name: 'login' })
 })
 
 export default router
