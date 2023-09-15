@@ -10,7 +10,7 @@
     <div class="wrapper__input">
       <input type="password" placeholder="确认密码" class="wrapper__input__content" />
     </div>
-    <div class="wrapper__register-button">注册</div>
+    <div class="wrapper__register-button">注 册</div>
     <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登陆</div>
   </div>
 </template>
