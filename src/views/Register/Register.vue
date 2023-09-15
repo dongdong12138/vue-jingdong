@@ -2,13 +2,16 @@
   <div class="wrapper">
     <img src="http://www.dell-lee.com/imgs/vue3/user.png" class="wrapper__img" />
     <div class="wrapper__input">
-      <input type="tel" placeholder="请输入手机号" class="wrapper__input__content" />
+      <input class="wrapper__input__content" placeholder="请输入手机号" />
     </div>
     <div class="wrapper__input">
       <input type="password" placeholder="请输入密码" class="wrapper__input__content" />
     </div>
-    <div class="wrapper__login-button" @click="handleLogin">登 陆</div>
-    <div class="wrapper__login-link" @click="handleRegister">立即注册</div>
+    <div class="wrapper__input">
+      <input type="password" placeholder="确认密码" class="wrapper__input__content" />
+    </div>
+    <div class="wrapper__register-button">注册</div>
+    <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登陆</div>
   </div>
 </template>
 
@@ -16,17 +19,13 @@
 import { useRouter } from 'vue-router'
 
 export default {
-  name: 'Login',
+  name: 'Register',
   setup() {
     const router = useRouter()
-    const handleLogin = () => {
-      localStorage.setItem('isLogin', 'true')
-      router.push({ name: 'home' })
+    const handleLoginClick = () => {
+      router.push({ name: 'login' })
     }
-    const handleRegister = () => {
-      router.push({ name: 'register' })
-    }
-    return { handleLogin, handleRegister }
+    return { handleLoginClick }
   }
 }
 </script>
@@ -45,7 +44,7 @@ export default {
   &__input {
     height: .48rem;
     background: #F9F9F9;
-    border: 1px solid rgba(0, 0, 0, 0.10); border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.10); border-radius: 6px;
     padding: 0 .16rem; margin: 0 .4rem .16rem .4rem;
     &__content {
       color: $content-notice-fontcolor; font-size: .16rem;
@@ -58,15 +57,15 @@ export default {
       }
     }
   }
-  &__login-button {
+  &__register-button {
     color: #fff; font-size: .16rem;
     background: #0091FF;
-    line-height: .48rem; text-align: center;
     border-radius: .04rem;
-    box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, 0.32);
+    box-shadow: 0 .04rem .08rem 0 rgba(0,145,255,0.32);
+    text-align: center; line-height: .48rem;
     margin: .32rem .4rem .16rem .4rem;
   }
-  &__login-link {
+  &__register-link {
     color: $content-notice-fontcolor; font-size: .14rem;
     text-align: center;
   }
