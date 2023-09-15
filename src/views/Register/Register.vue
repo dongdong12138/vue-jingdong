@@ -26,9 +26,13 @@ const useRegisterEffect = (showToast) => {
   const router = useRouter()
   const data = reactive({ username: '', password: '', ensure: '' })
   const handleRegister = async () => {
+    const { username, password, ensure } = data
+    if (!username) return showToast('请输入用户名')
+    if (!password) return showToast('请输入密码')
+    if (!ensure) return showToast('请输入确认密码')
+    if (password !== ensure) return showToast('两次输入的密码不一致')
     try {
-      const params = { username: data.username, password: data.password, ensure: data.ensure }
-      const result = await postRequest('/api/user/register', params)
+      const result = await postRequest('/api/user/register', { username, password, ensure })
       if (result?.errno === 0) {
         router.push({ name: 'login' })
       } else {

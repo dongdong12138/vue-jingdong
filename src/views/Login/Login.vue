@@ -23,8 +23,11 @@ const useLoginEffect = (showToast) => {
   const router = useRouter()
   const data = reactive({ username: '', password: '' })
   const handleLogin = async () => {
+    const { username, password } = data
+    if (!username) return showToast('请输入用户名')
+    if (!password) return showToast('请输入密码')
     try {
-      const result = await postRequest('/api/user/login', { username: data.username, password: data.password })
+      const result = await postRequest('/api/user/login', { username, password })
       if (result?.errno === 0) {
         localStorage.setItem('isLogin', 'true')
         router.push({ name: 'home' })
