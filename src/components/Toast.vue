@@ -27,8 +27,10 @@ export const useToastEffect = () => {
 </script>
 
 <style scoped lang="scss">
+@import "../style/viriables.scss";
+
 .toast {
-  color: #fff;
+  color: $bgColor;
   background: rgba(0, 0, 0, .35);
   border-radius: .05rem;
   padding: .1rem;

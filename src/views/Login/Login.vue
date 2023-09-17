@@ -90,8 +90,8 @@ export default {
     }
   }
   &__login-button {
-    color: #fff; font-size: .16rem;
-    background: #0091FF;
+    color: $bgColor; font-size: .16rem;
+    background: $btn-bgColor;
     line-height: .48rem; text-align: center;
     border-radius: .04rem;
     box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, 0.32);

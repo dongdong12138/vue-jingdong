@@ -21,6 +21,11 @@
             <span class="product__item__origin">&yen;66.6</span>
           </p>
         </div>
+        <div class="product__number">
+          <span class="product__number__minus">-</span>
+          0
+          <span class="product__number__plus">+</span>
+        </div>
       </div>
     </div>
 
@@ -34,6 +39,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../style/viriables.scss";
+@import "../../style/mixins.scss";
+
 .content {
   display: flex;
   position: absolute; left: 0; right: 0; top: 1.5rem; bottom: .5rem;
@@ -41,13 +49,13 @@ export default {
 
 .category {
   width: .76rem; height: 100%;
-  background: #F5F5F5;
+  background: $search-bgColor;
   overflow-y: scroll;
   &__item {
-    color: #333; font-size: 14px;
+    color: $content-fontcolor; font-size: 14px;
     line-height: .4rem; text-align: center;
     &--active {
-      background: #FFF;
+      background: $bgColor;
     }
   }
 }
@@ -56,24 +64,29 @@ export default {
   flex: 1;
   overflow-y: scroll;
   &__item {
-    border-bottom: .01rem solid #F1F1F1;
+    border-bottom: .01rem solid $content-bgColor;
     display: flex;
     padding: .12rem 0; margin: 0 .16rem;
+    position: relative;
+    &__detail {
+      overflow: hidden;
+    }
     &__img {
       width: .68rem; height: .68rem;
       margin-right: .16rem;
     }
     &__title {
-      color: #333; font-size: .14rem;
+      color: $content-fontcolor; font-size: .14rem;
       line-height: .2rem;
       margin: 0;
+      @include ellipsis;
     }
     &__sales {
-      color: #333; font-size: .12rem;
+      color: $content-fontcolor; font-size: .12rem;
       margin: .06rem 0;
     }
     &__price {
-      color: #E93B3B; font-size: .14rem;
+      color: $hightlight-fontColor; font-size: .14rem;
       line-height: .2rem;
       margin: 0;
     }
@@ -81,9 +94,29 @@ export default {
       font-size: .12rem;
     }
     &__origin {
-      color: #999; font-size: .12rem;
+      color: $light-fontColor; font-size: .12rem;
       text-decoration: line-through; line-height: .2rem;
       margin-left: .06rem;
+    }
+    .product__number {
+      position: absolute; right: 0; bottom: .12rem;
+      &__minus, &__plus {
+        display: inline-block;
+        font-size: .2rem;
+        width: .2rem; height: .2rem;
+        text-align: center; line-height: .16rem;;
+        border-radius: 50%;
+      }
+      &__minus {
+        color: $medium-fontColor;
+        border: .01rem solid $medium-fontColor;
+        margin-right: .05rem;
+      }
+      &__plus {
+        color: $bgColor;
+        background: $btn-bgColor;
+        margin-left: .05rem;
+      }
     }
   }
 }

@@ -49,7 +49,7 @@ export default {
       margin-right: .16rem;
     }
     &__highlight {
-      color: #E93B3B; font-size: .13rem;
+      color: $hightlight-fontColor; font-size: .13rem;
       line-height: .18rem;
       margin: .08rem 0 0 0;
     }
