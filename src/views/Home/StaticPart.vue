@@ -61,8 +61,8 @@ export default {
 }
 
 .search {
-  color: #B7B7B7;
-  background: #F5F5F5;
+  color: $search-fontColor;
+  background: $search-bgColor;
   border-radius: .16rem;
   line-height: .32rem;
   margin-bottom: .12rem;

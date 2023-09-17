@@ -44,6 +44,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../../style/viriables.scss";
+
 .wrapper {
   padding: 0 .18rem;
 }
@@ -51,29 +53,29 @@ export default {
 .search {
   line-height: .32rem;
   display: flex;
-  margin: .2rem 0 .16rem 0;
+  margin: .14rem 0 .04rem 0;
   &__back {
     color: #B6B6B6; font-size: .24rem;
     width: .3rem;
   }
   &__content {
     flex: 1;
-    background: #F5F5F5;
+    background: $search-bgColor;
     border-radius: .16rem;
     display: flex;
     &__icon {
-      color: #B7B7B7; text-align: center;
+      color: $search-fontColor; text-align: center;
       width: .44rem;
     }
     &__input {
       display: block;
-      color: #333; font-size: .14rem;
+      color: $content-fontcolor; font-size: .14rem;
       width: 100%; height: .32rem;
       border: none; outline: none;
       background: none;
       padding-right: .2rem;
       &::placeholder {
-        color: #333;
+        color: $content-fontcolor;
       }
     }
   }
