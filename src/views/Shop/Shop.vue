@@ -9,36 +9,46 @@
       </div>
     </div>
 
-    <ShopInfo :item="item" :hideBorder="true" />
+    <ShopInfo v-if="item.imgUrl" :item="item" :hideBorder="true" />
 
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { reactive, toRefs } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { getRequest } from '@/utils/request'
 import ShopInfo from '@/components/ShopInfo.vue'
+
+const useBackRouterEffect = () => {
+  const router = useRouter()
+  const handleBackClick = () => {
+    router.back()
+  }
+  return { handleBackClick }
+}
+
+const useShopInfoEffect = () => {
+  const route = useRoute()
+  const data = reactive({ item: {} })
+  const getItemData = async () => {
+    const result = await getRequest(`/api/shop/${route.params.id}`)
+    if (result?.errno === 0 && result?.data) {
+      data.item = result.data
+    }
+  }
+  const { item } = toRefs(data)
+  return { item, getItemData }
+}
 
 export default {
   name: 'Shop',
   components: { ShopInfo },
   setup() {
-    const router = useRouter()
-    const item = {
-      _id: '1',
-      name: '沃尔玛',
-      imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-      sales: 10000,
-      expressLimit: 0,
-      expressPrice: 5,
-      slogan: 'VIP尊享满89元减4元运费券'
-    }
-    const handleBackClick = () => {
-      router.back()
-    }
-    return {
-      item,
-      handleBackClick
-    }
+    const { handleBackClick } = useBackRouterEffect()
+    const { item, getItemData } = useShopInfoEffect()
+    getItemData()
+    return { item, handleBackClick }
   }
 }
 </script>
