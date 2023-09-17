@@ -11,7 +11,7 @@
       <input v-model="ensure" type="password" placeholder="确认密码" class="wrapper__input__content" />
     </div>
     <div class="wrapper__register-button" @click="handleRegister">注 册</div>
-    <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登陆</div>
+    <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登录</div>
   </div>
   <Toast v-show="toastVisible" :message="toastMessage" />
 </template>
