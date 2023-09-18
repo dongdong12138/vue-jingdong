@@ -22,7 +22,7 @@
         </div>
         <div class="product__number">
           <span class="product__number__minus" @click="changeCartItemInfo(shopId, item._id, item, -1)">-</span>
-          {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+          {{ item.count || 0 }}
           <span class="product__number__plus" @click="changeCartItemInfo(shopId, item._id, item, 1)">+</span>
         </div>
       </div>
@@ -34,8 +34,8 @@
 <script>
 import { ref, reactive, toRefs, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import { getRequest } from '@/utils/request'
+import useCartEffect from './hooks/useCartEffect'
 
 const categories = [
   { name: '全部商品', tab: 'all' }, { name: '秒杀', tab: 'seckill' },
@@ -63,15 +63,6 @@ const useContentListEffect = (tab, shopId) => {
   return { contentList }
 }
 
-const useCartEffect = () => {
-  const store = useStore()
-  const { cartList } = toRefs(store.state)
-  const changeCartItemInfo = (shopId, productId, productInfo, num) => {
-    store.commit('changeCartItemInfo', { shopId, productId, productInfo, num })
-  }
-  return { cartList, changeCartItemInfo }
-}
-
 export default {
   name: 'ShopContent',
   setup() {
@@ -79,12 +70,11 @@ export default {
     const shopId = route.params.id
     const { currentTab, handleTabClick } = useTabEffect()
     const { contentList } = useContentListEffect(currentTab, shopId)
-    const { cartList, changeCartItemInfo } = useCartEffect()
-    console.log('cartList:', cartList)
+    const { changeCartItemInfo } = useCartEffect()
     return {
       shopId, categories, contentList,
       currentTab, handleTabClick,
-      cartList, changeCartItemInfo
+      changeCartItemInfo
     }
   }
 }
