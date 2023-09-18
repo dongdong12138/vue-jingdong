@@ -22,8 +22,8 @@
         </div>
         <div class="product__number">
           <span class="product__number__minus">-</span>
-          0
-          <span class="product__number__plus">+</span>
+          {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+          <span class="product__number__plus" @click="addItemToCart(shopId, item._id, item)">+</span>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@
 <script>
 import { ref, reactive, toRefs, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { getRequest } from '@/utils/request'
 
 const categories = [
@@ -49,11 +50,10 @@ const useTabEffect = () => {
   return { currentTab, handleTabClick }
 }
 
-const useContentListEffect = tab => {
-  const route = useRoute()
+const useContentListEffect = (tab, shopId) => {
   const data = reactive({ contentList: [] })
   const getContentList = async () => {
-    const result = await getRequest(`/api/shop/${route.params.id}/products`, { tab: tab.value })
+    const result = await getRequest(`/api/shop/${shopId}/products`, { tab: tab.value })
     if (result?.errno === 0 && result?.data?.length) {
       data.contentList = result.data
     }
@@ -63,12 +63,29 @@ const useContentListEffect = tab => {
   return { contentList }
 }
 
+const useCartEffect = () => {
+  const store = useStore()
+  const { cartList } = toRefs(store.state)
+  const addItemToCart = (shopId, productId, productInfo) => {
+    store.commit('addItemToCart', { shopId, productId, productInfo })
+  }
+  return { cartList, addItemToCart }
+}
+
 export default {
   name: 'ShopContent',
   setup() {
+    const route = useRoute()
+    const shopId = route.params.id
     const { currentTab, handleTabClick } = useTabEffect()
-    const { contentList } = useContentListEffect(currentTab)
-    return { categories, currentTab, contentList, handleTabClick }
+    const { contentList } = useContentListEffect(currentTab, shopId)
+    const { cartList, addItemToCart } = useCartEffect()
+    console.log('cartList:', cartList)
+    return {
+      shopId, categories, contentList,
+      currentTab, handleTabClick,
+      cartList, addItemToCart
+    }
   }
 }
 </script>
