@@ -1,7 +1,14 @@
 <template>
+  <div v-if="showCart" class="mask"></div>
   <div class="cart">
 
-    <div class="product">
+    <div v-if="showCart" class="product">
+      <div class="product__header">
+        <div class="product__header__all" @click="setCartItemsChecked(shopId)">
+          <span v-html="allChecked ? '&#xe652;': '&#xe6f7;'" class="product__header__icon iconfont"></span>全选
+        </div>
+        <div class="product__header__clear" @click="cleanCartProducts(shopId)">清空购物车</div>
+      </div>
       <template v-for="item in productList" :key="item._id">
         <div v-if="item.count > 0" class="product__item">
           <div
@@ -28,7 +35,7 @@
 
     <div class="check">
       <div class="check__icon">
-        <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="check__icon__img" />
+        <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="check__icon__img" @click="handleCartShowChange" />
         <div class="check__icon__tag">{{ total }}</div>
       </div>
       <div class="check__info">
@@ -41,7 +48,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useCartEffect from './hooks/useCartEffect'
@@ -78,6 +85,20 @@ const useComputedCartEffect = () => {
     return count.toFixed(2)
   })
 
+  const allChecked = computed(() => {
+    const productList = cartList[shopId]
+    let result = true
+    if (productList) {
+      for (const key in productList) {
+        const product = productList[key]
+        if (product.count > 0 && !product.check) {
+          result = false
+        }
+      }
+    }
+    return result
+  })
+
   const productList = computed(() => {
     return cartList[shopId] || []
   })
@@ -86,19 +107,32 @@ const useComputedCartEffect = () => {
     store.commit('changeCartItemChecked', { shopId, productId })
   }
 
-  return { total, price, productList, changeCartItemChecked }
+  const cleanCartProducts = shopId => {
+    store.commit('cleanCartProducts', { shopId })
+  }
+
+  const setCartItemsChecked = shopId => {
+    store.commit('setCartItemsChecked', { shopId })
+  }
+
+  return { total, price, allChecked, productList, changeCartItemChecked, cleanCartProducts, setCartItemsChecked }
 }
 export default {
   name: 'ShopCart',
   setup() {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList, changeCartItemChecked } = useComputedCartEffect()
+    const { total, price, allChecked, productList, changeCartItemChecked, cleanCartProducts, setCartItemsChecked } = useComputedCartEffect()
     const { changeCartItemInfo } = useCartEffect()
+    const showCart = ref(false)
+    const handleCartShowChange = () => {
+      showCart.value = !showCart.value
+    }
     return {
       shopId,
-      total, price, productList, changeCartItemChecked,
-      changeCartItemInfo
+      total, price, allChecked, productList, changeCartItemChecked, cleanCartProducts, setCartItemsChecked,
+      changeCartItemInfo,
+      showCart, handleCartShowChange
     }
   }
 }
@@ -109,14 +143,41 @@ export default {
 @import "../../style/viriables.scss";
 @import "../../style/mixins.scss";
 
+.mask {
+  background: rgba(0, 0, 0, .5);
+  position: fixed; left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 1;
+}
+
 .cart {
+  background: #FFF;
   position: absolute; left: 0; right: 0; bottom: 0;
+  z-index: 2;
 }
 
 .product {
   flex: 1;
   background: #FFF;
   overflow-y: scroll;
+  &__header {
+    color: #333; font-size: .14rem;
+    border-bottom: 1px solid #F1F1F1;
+    line-height: .52rem;
+    display: flex;
+    &__all {
+      width: .64rem;
+      margin-left: .18rem;
+    }
+    &__icon {
+      color: #0091FF; font-size: .2rem;
+      display: inline-block;
+    }
+    &__clear {
+      text-align: right;
+      flex: 1;
+      margin-right: .16rem;
+    }
+  }
   &__item {
     display: flex;
     border-bottom: .01rem solid $content-bgColor;
