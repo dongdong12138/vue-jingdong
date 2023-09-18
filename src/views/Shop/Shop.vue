@@ -10,7 +10,7 @@
     </div>
 
     <ShopInfo v-if="item.imgUrl" :item="item" :hideBorder="true" />
-    <ShopContent />
+    <ShopContent :shop-name="item.name" />
     <ShopCart />
 
   </div>

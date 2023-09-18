@@ -64,7 +64,7 @@ const useComputedCartEffect = () => {
   const shopId = route.params.id
 
   const total = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList
     let count = 0
     if (productList) {
       for (const key in productList) {
@@ -76,7 +76,7 @@ const useComputedCartEffect = () => {
   })
 
   const price = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList
     let count = 0
     if (productList) {
       for (const key in productList) {
@@ -90,7 +90,7 @@ const useComputedCartEffect = () => {
   })
 
   const allChecked = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList
     let result = true
     if (productList) {
       for (const key in productList) {
@@ -104,7 +104,7 @@ const useComputedCartEffect = () => {
   })
 
   const productList = computed(() => {
-    return cartList[shopId] || []
+    return cartList[shopId]?.productList || []
   })
 
   const changeCartItemChecked = (shopId, productId) => {
