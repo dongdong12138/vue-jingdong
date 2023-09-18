@@ -11,6 +11,7 @@
 
     <ShopInfo v-if="item.imgUrl" :item="item" :hideBorder="true" />
     <ShopContent />
+    <ShopCart />
 
   </div>
 </template>
@@ -21,6 +22,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { getRequest } from '@/utils/request'
 import ShopInfo from '@/components/ShopInfo.vue'
 import ShopContent from './Content.vue'
+import ShopCart from './Cart.vue'
 
 const useBackRouterEffect = () => {
   const router = useRouter()
@@ -45,7 +47,7 @@ const useShopInfoEffect = () => {
 
 export default {
   name: 'Shop',
-  components: { ShopInfo, ShopContent },
+  components: { ShopInfo, ShopContent, ShopCart },
   setup() {
     const { handleBackClick } = useBackRouterEffect()
     const { item, getItemData } = useShopInfoEffect()
