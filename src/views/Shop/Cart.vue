@@ -52,33 +52,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useCartEffect from '@/hooks/useCartEffect'
 
 const useComputedCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList, productList, changeCartItemInfo } = useCartEffect(shopId)
-
-  const calculations = computed(() => {
-    const productList = cartList[shopId]?.productList
-    const result = { total: 0, price: 0, allChecked: true }
-    if (productList) {
-      for (const key in productList) {
-        const product = productList[key]
-        result.total += product.count
-        if (product.check) {
-          result.price += (product.count * product.price)
-        }
-        if (product.count > 0 && !product.check) {
-          result.allChecked = false
-        }
-      }
-    }
-    result.price = result.price.toFixed(2)
-    return result
-  })
+  const { productList, calculations, changeCartItemInfo } = useCartEffect(shopId)
 
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', { shopId, productId })
