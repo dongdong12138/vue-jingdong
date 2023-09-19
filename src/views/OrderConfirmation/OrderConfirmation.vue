@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+
     <div class="top">
       <div class="top__header">
         <div class="iconfont top__header__back">&#xe6f2;</div>
@@ -15,22 +16,50 @@
         <div class="iconfont top__receiver__icon">&#xe6f2;</div>
       </div>
     </div>
+
+    <div class="products">
+      <div class="products__title">{{ shopName }}</div>
+      <div class="products__list">
+        <div v-for="item in productList" :key="item._id" class="products__item">
+          <img :src="item.imgUrl" alt="img" class="products__item__img" />
+          <div class="products__item__detail">
+            <h4 class="products__item__title">{{ item.name }}</h4>
+            <p class="products__item__price">
+              <span>
+                <span class="products__item__yen">&yen; </span>
+                {{ item.price }} x {{ item.count }}
+              </span>
+              <span class="products__item__total">
+                 <span class="products__item__yen">&yen; </span>
+                {{ item.price * item.count }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import { useRoute } from 'vue-router'
+import useCartEffect from '@/hooks/useCartEffect'
 
 export default {
   name: 'OrderConfirmation',
   setup() {
     const route = useRoute()
-    console.log('route.params.id:', route.params.id)
+    const { shopName, productList } = useCartEffect(route.params.id)
+    return { shopName, productList }
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import "../../style/viriables.scss";
+@import "../../style/mixins.scss";
+
 .wrapper {
   background-color: #eee;
   position: absolute; left: 0; right: 0; top: 0; bottom: 0;
@@ -79,6 +108,47 @@ export default {
       color: #666; font-size: .2rem;
       position: absolute; right: .16rem; top: .5rem;
       transform: rotate(180deg);
+    }
+  }
+}
+
+.products {
+  background: #FFF;
+  margin: .16rem .18rem .55rem .18rem;
+  &__title {
+    color: #333; font-size: .16rem;
+    padding: .16rem .16rem 0 .16rem;
+  }
+  &__item {
+    display: flex;
+    padding: .16rem;
+    position: relative;
+    &__img {
+      width: .46rem; height: .46rem;
+      margin-right: .16rem;
+    }
+    &__detail {
+      flex: 1;
+    }
+    &__title {
+      color: $content-fontcolor; font-size: .14rem;
+      line-height: .2rem;
+      margin: 0;
+      @include ellipsis;
+    }
+    &__price {
+      color: $hightlight-fontColor; font-size: .14rem;
+      line-height: .2rem;
+      display: flex;
+      margin: .06rem 0 0 0;
+    }
+    &__total {
+      color: #000;
+      text-align: right;
+      flex: 1;
+    }
+    &__yen {
+      font-size: .12rem;
     }
   }
 }

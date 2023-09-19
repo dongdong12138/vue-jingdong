@@ -36,7 +36,7 @@ import { ref, reactive, toRefs, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { getRequest } from '@/utils/request'
-import useCartEffect from './hooks/useCartEffect'
+import useCartEffect from '@/hooks/useCartEffect'
 
 const categories = [
   { name: '全部商品', tab: 'all' }, { name: '秒杀', tab: 'seckill' },

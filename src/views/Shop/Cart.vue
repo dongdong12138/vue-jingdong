@@ -55,11 +55,11 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import useCartEffect from './hooks/useCartEffect'
+import useCartEffect from '@/hooks/useCartEffect'
 
 const useComputedCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList, changeCartItemInfo } = useCartEffect()
+  const { cartList, productList, changeCartItemInfo } = useCartEffect(shopId)
 
   const calculations = computed(() => {
     const productList = cartList[shopId]?.productList
@@ -78,10 +78,6 @@ const useComputedCartEffect = (shopId) => {
     }
     result.price = result.price.toFixed(2)
     return result
-  })
-
-  const productList = computed(() => {
-    return cartList[shopId]?.productList || []
   })
 
   const changeCartItemChecked = (shopId, productId) => {
