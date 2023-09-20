@@ -1,40 +1,82 @@
 <template>
   <div class="wrapper">
+
     <div class="search">
       <span class="iconfont">&#xe62d;</span>
-      <input type="text" class="search__area" />
-      <div class="search__cancel">取消</div>
+      <input type="text" placeholder="山姆会员商店优惠商品" class="search__area" @change="handleSearchChange" />
+      <div class="search__cancel" @click="handleCancelSearchClick">取消</div>
     </div>
-    <div class="area">
+
+    <div v-if="history.length" class="area">
       <h4 class="area__title">
         搜索历史
-        <span class="area__title__clear">清除搜索历史</span>
+        <span class="area__title__clear" @click="handleClearHistoryClick">清除搜索历史</span>
       </h4>
       <ul class="area__list">
-        <li class="area__list__item">尖椒肉丝</li>
-        <li class="area__list__item">鲜花</li>
-        <li class="area__list__item">山姆会员商店</li>
-        <li class="area__list__item">新鲜水果</li>
-        <li class="area__list__item">生日鲜花</li>
+        <li v-for="item in history" :key="item" class="area__list__item" @click="goToSearchList(item)">{{ item }}</li>
       </ul>
     </div>
+
     <div class="area">
       <h4 class="area__title">热门搜索</h4>
       <ul class="area__list">
-        <li class="area__list__item">尖椒肉丝</li>
-        <li class="area__list__item">鲜花</li>
-        <li class="area__list__item">山姆会员商店</li>
-        <li class="area__list__item">新鲜水果</li>
-        <li class="area__list__item">生日鲜花</li>
+        <li v-for="item in hotWordList" :key="item" class="area__list__item" @click="goToSearchList(item)">{{ item }}</li>
       </ul>
     </div>
+
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { getRequest } from '@/utils/request'
+
+const useHotWordListEffect = () => {
+  const hotWordList = ref([])
+  const getHotWorList = async () => {
+    const result = await getRequest('/api/shop/search/hot-words')
+    if (result?.errno === 0 && result?.data?.length) {
+      hotWordList.value = result.data
+    }
+  }
+  return { hotWordList, getHotWorList }
+}
 
 export default {
-  name: 'Search'
+  name: 'Search',
+  setup() {
+    const router = useRouter()
+    const history = ref(JSON.parse(localStorage.getItem('history')) || [])
+    const { hotWordList, getHotWorList } = useHotWordListEffect()
+
+    getHotWorList()
+    const handleSearchChange = event => {
+      const searchValue = event.target.value
+      if (!searchValue) return
+      const hasValue = history.value.find(item => item === searchValue)
+      if (!hasValue) {
+        history.value.push(searchValue)
+        localStorage.setItem('history', JSON.stringify(history.value))
+      }
+      router.push(`/searchList?keyword=${searchValue}`)
+    }
+
+    const handleCancelSearchClick = () => {
+      router.back()
+    }
+
+    const handleClearHistoryClick = () => {
+      history.value = []
+      localStorage.setItem('history', JSON.stringify(history.value))
+    }
+
+    const goToSearchList = keyword => {
+      router.push(`/searchList?keyword=${keyword}`)
+    }
+
+    return { history, hotWordList, handleSearchChange, handleCancelSearchClick, handleClearHistoryClick, goToSearchList }
+  }
 }
 </script>
 
