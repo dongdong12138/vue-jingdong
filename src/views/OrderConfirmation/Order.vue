@@ -2,10 +2,10 @@
 
   <div class="order">
     <div class="order__price">实付金额 <b>¥{{ calculations.price }}</b></div>
-    <div class="order__btn">提交订单</div>
+    <div class="order__btn" @click="handleShowConfirmChange(true)">提交订单</div>
   </div>
 
-  <div class="mask">
+  <div v-show="showConfirm" class="mask" @click.self="handleShowConfirmChange(false)">
     <div class="mask__content">
       <h3 class="mask__content__title">确认要离开收银台？</h3>
       <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
@@ -19,10 +19,19 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { postRequest } from '@/utils/request'
 import useCartEffect from '@/hooks/useCartEffect'
+
+const useShowMaskEffect = () => {
+  const showConfirm = ref(false)
+  const handleShowConfirmChange = state => {
+    showConfirm.value = state
+  }
+  return { showConfirm, handleShowConfirmChange }
+}
 
 export default {
   name: 'Order',
@@ -32,6 +41,7 @@ export default {
     const store = useStore()
     const shopId = route.params.id
     const { calculations, productList, shopName } = useCartEffect(route.params.id)
+    const { showConfirm, handleShowConfirmChange } = useShowMaskEffect()
 
     const handleConfirmOrder = async isCanceled => {
       const products = []
@@ -56,7 +66,10 @@ export default {
       }
     }
 
-    return { calculations, handleConfirmOrder }
+    return {
+      calculations, handleConfirmOrder,
+      showConfirm, handleShowConfirmChange
+    }
   }
 }
 </script>
