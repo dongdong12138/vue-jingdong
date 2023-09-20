@@ -123,7 +123,7 @@ export default {
   overflow-y: scroll;
   &__header {
     color: $content-fontcolor; font-size: .14rem;
-    border-bottom: 1px solid $content-bgColor;
+    border-bottom: .01rem solid $content-bgColor;
     line-height: .52rem;
     display: flex;
     &__all {

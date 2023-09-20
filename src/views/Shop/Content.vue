@@ -112,7 +112,7 @@ export default {
   background: $search-bgColor;
   overflow-y: scroll;
   &__item {
-    color: $content-fontcolor; font-size: 14px;
+    color: $content-fontcolor; font-size: .14rem;
     line-height: .4rem; text-align: center;
     &--active {
       background: $bgColor;

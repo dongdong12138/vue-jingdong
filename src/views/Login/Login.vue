@@ -76,7 +76,7 @@ export default {
   &__input {
     height: .48rem;
     background: #F9F9F9;
-    border: 1px solid rgba(0, 0, 0, 0.10); border-radius: 6px;
+    border: .01rem solid rgba(0, 0, 0, 0.10); border-radius: .06rem;
     padding: 0 .16rem; margin: 0 .4rem .16rem .4rem;
     &__content {
       color: $content-notice-fontcolor; font-size: .16rem;

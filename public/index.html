@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>
+        // 以下方案要求所有单位都使用 rem
+        // publick/index.html 不会被 Webpack 打包编译，所以最好写 ES5 的代码
+        // 获取用户设备屏幕宽度
+        var width = document.documentElement.clientWidth || document.body.clientWidth
+        // 比率：计算用户的设备与开发时的设备的屏幕比例
+        // 375 是开发时所用的设备（iPhone 6/7/8）的屏幕宽度
+        var ratio = width / 375
+        // 动态计算新的 fontSize
+        // 100 是开发时所用的默认的 fontSize（开发时给 html 设置的 fontSize）
+        var fontSize = 100 * ratio
+        document.getElementsByTagName('html')[0].style.fontSize = fontSize + 'px'
+    </script>
   </head>
   <body>
     <noscript>
