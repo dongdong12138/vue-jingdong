@@ -1,20 +1,62 @@
 <template>
+
   <div class="order">
     <div class="order__price">实付金额 <b>¥{{ calculations.price }}</b></div>
     <div class="order__btn">提交订单</div>
   </div>
+
+  <div class="mask">
+    <div class="mask__content">
+      <h3 class="mask__content__title">确认要离开收银台？</h3>
+      <p class="mask__content__desc">请尽快完成支付，否则将被取消</p>
+      <div class="mask__content__btns">
+        <div class="mask__content__btn mask__content__btn--first" @click="handleConfirmOrder(false)">取消订单</div>
+        <div class="mask__content__btn mask__content__btn--last" @click="handleConfirmOrder(true)">确认支付</div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { postRequest } from '@/utils/request'
 import useCartEffect from '@/hooks/useCartEffect'
 
 export default {
   name: 'Order',
   setup() {
+    const router = useRouter()
     const route = useRoute()
-    const { calculations } = useCartEffect(route.params.id)
-    return { calculations }
+    const store = useStore()
+    const shopId = route.params.id
+    const { calculations, productList, shopName } = useCartEffect(route.params.id)
+
+    const handleConfirmOrder = async isCanceled => {
+      const products = []
+      for (const key in productList.value) {
+        const product = productList.value[key]
+        products.push({ id: parseInt(product._id, 10), num: product.count })
+      }
+      try {
+        const result = await postRequest('/api/order', {
+          addressId: 1,
+          shopId,
+          shopName: shopName.value,
+          isCanceled,
+          products
+        })
+        if (result?.errno === 0) {
+          store.commit('clearCartData', shopId)
+          router.push({ name: 'home' })
+        }
+      } catch (e) {
+        // 提示下单失败
+      }
+    }
+
+    return { calculations, handleConfirmOrder }
   }
 }
 </script>
@@ -38,6 +80,50 @@ export default {
     width: .98rem;
     background: #4FB0F9;
     text-align: center;
+  }
+}
+
+.mask {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute; left: 0; right: 0; bottom: 0; top: 0;
+  z-index: 1;
+  &__content {
+    width: 3rem; height: 1.56rem;
+    background: #FFF;
+    border-radius: .04rem;
+    text-align: center;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    &__title {
+      color: #333; font-size: .18rem;
+      line-height: .26rem;
+      margin: .24rem 0 0 0;
+    }
+    &__desc {
+      color: #666666; font-size: .14rem;
+      margin: .08rem 0 0 0;
+    }
+    &__btns {
+      display: flex;
+      margin: .24rem .58rem;
+    }
+    &__btn {
+      font-size: .14rem;
+      width: .8rem;
+      border-radius: .16rem;
+      line-height: .32rem;
+      flex: 1;
+      &--first {
+        color: #4FB0F9;
+        border: .01rem solid #4FB0F9;
+        margin-right: .12rem;
+      }
+      &--last {
+        color: #fff;
+        background: #4FB0F9;
+        margin-left: .12rem;
+      }
+    }
   }
 }
 </style>

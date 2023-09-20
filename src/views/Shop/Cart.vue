@@ -11,28 +11,26 @@
           <span class="product__header__clear__btn" @click="cleanCartProducts(shopId)">清空购物车</span>
         </div>
       </div>
-      <template v-for="item in productList" :key="item._id">
-        <div v-if="item.count > 0" class="product__item">
-          <div
-            v-html="item.check ? '&#xe652;': '&#xe667;'"
-            class="product__item__checked iconfont"
-            @click="changeCartItemChecked(shopId, item._id)"
-          />
-          <img :src="item.imgUrl" class="product__item__img" />
-          <div class="product__item__detail">
-            <h4 class="product__item__title">{{ item.name }}</h4>
-            <p class="product__item__price">
-              <span class="product__item__yen">&yen;</span>{{ item.price }}
-              <span class="product__item__origin">&yen;{{ item.oldPrice }}</span>
-            </p>
-          </div>
-          <div class="product__number">
-            <span class="product__number__minus" @click="changeCartItemInfo(shopId, item._id, item, -1)">-</span>
-            {{ item.count || 0 }}
-            <span class="product__number__plus" @click="changeCartItemInfo(shopId, item._id, item, 1)">+</span>
-          </div>
+      <div v-for="item in productList" :key="item._id" class="product__item">
+        <div
+          v-html="item.check ? '&#xe652;': '&#xe667;'"
+          class="product__item__checked iconfont"
+          @click="changeCartItemChecked(shopId, item._id)"
+        />
+        <img :src="item.imgUrl" class="product__item__img" />
+        <div class="product__item__detail">
+          <h4 class="product__item__title">{{ item.name }}</h4>
+          <p class="product__item__price">
+            <span class="product__item__yen">&yen;</span>{{ item.price }}
+            <span class="product__item__origin">&yen;{{ item.oldPrice }}</span>
+          </p>
         </div>
-      </template>
+        <div class="product__number">
+          <span class="product__number__minus" @click="changeCartItemInfo(shopId, item._id, item, -1)">-</span>
+          {{ item.count || 0 }}
+          <span class="product__number__plus" @click="changeCartItemInfo(shopId, item._id, item, 1)">+</span>
+        </div>
+      </div>
     </div>
 
     <div class="check">

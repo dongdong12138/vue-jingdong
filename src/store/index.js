@@ -58,6 +58,9 @@ export default createStore({
         }
       }
       setLocalCartList(state)
+    },
+    clearCartData(state, shopId) {
+      state.cartList[shopId].productList = {}
     }
   },
   actions: {},

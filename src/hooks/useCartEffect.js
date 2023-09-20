@@ -6,7 +6,15 @@ const useCartEffect = shopId => {
   const cartList = store.state.cartList
 
   const productList = computed(() => {
-    return cartList[shopId]?.productList || []
+    const productList = cartList[shopId]?.productList || {}
+    const notEmptyProductList = {}
+    for (const key in productList) {
+      const product = productList[key]
+      if (product.count > 0) {
+        notEmptyProductList[key] = product
+      }
+    }
+    return notEmptyProductList
   })
 
   const shopName = computed(() => {
