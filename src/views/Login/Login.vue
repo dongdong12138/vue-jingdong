@@ -83,7 +83,8 @@ export default {
       width: 100%;
       background: none;
       border: none; outline: none;
-      line-height: .48rem;
+      line-height: .22rem;
+      margin-top: .12rem;
       &::placeholder {
         color: $content-notice-fontcolor;
       }
